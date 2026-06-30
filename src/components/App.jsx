@@ -1,10 +1,17 @@
 import React from 'react';
+import { ToastContainer } from "react-toastify";
 import { PokemonForm } from './PokemonForm';
+import { PokemonInfo } from './PokemonInfo';
 
 export class App extends React.Component{
 
   state = {
+    pokemonName: '',
+  };
 
+  handleFormSubmit = pokemonName =>{
+    console.log(pokemonName);
+    this.setState({pokemonName});
   };
 
   render(){
@@ -19,7 +26,9 @@ export class App extends React.Component{
       //   color: '#010101'
       // }}
     >
-        <PokemonForm/>
+        <PokemonForm onSubmit = {this.handleFormSubmit}/>
+        <PokemonInfo pokemonName = {this.state.pokemonName}/>
+        <ToastContainer autoClose={3000}/>
     </div>
   );
 }
