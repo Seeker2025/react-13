@@ -1,10 +1,11 @@
 import React from 'react';
-import { fetchPokemon as pokemonApi } from './services/pokemon-api';
+import { fetchPokemon } from './services/pokemon-api';
 import { PokemonPendingView } from './PokemonPendingView';
 
 
 export class PokemonInfo extends React.Component{
     state = {
+        pokemon: null,
         status: 'idle',
     };
 
@@ -20,12 +21,20 @@ export class PokemonInfo extends React.Component{
                 { status: 'pending'},
                 ()=>{ console.log(this.state.status) }
             );
-        }
-        setTimeout(()=>{
-        pokemonApi.fetchPokemon(nextName)
-        .then(pokemon => this.setState({ pokemon, status: 'resolved'}))
+
+             fetchPokemon(nextName)
+        .then(pokemon => this.setState(
+            { pokemon, status: 'resolved'},
+            ()=>{
+                console.log(pokemon);
+                console.log(this.state.pokemon)
+            }        
+        ))
         .catch(error => this.setState({ error, status: 'reject'}))
-        }, 1000);
+        }
+       
+       
+        
         
     }
 
