@@ -1,11 +1,13 @@
 import React from 'react';
 import { fetchPokemon } from './services/pokemon-api';
 import { PokemonPendingView } from './PokemonPendingView';
-
+import { PokemonDataView } from './PokemonDataView';
+import  PokemonErrorView  from './PokemonErrorView';
 
 export class PokemonInfo extends React.Component{
     state = {
         pokemon: null,
+        error: null,
         status: 'idle',
     };
 
@@ -30,7 +32,7 @@ export class PokemonInfo extends React.Component{
                 console.log(this.state.pokemon)
             }        
         ))
-        .catch(error => this.setState({ error, status: 'reject'}))
+        .catch(error => this.setState({ error, status: 'rejected'}))
         }
        
        
@@ -39,7 +41,7 @@ export class PokemonInfo extends React.Component{
     }
 
     render(){
-        const { status } = this.state;
+        const { status, pokemon, error } = this.state;
         const { pokemonName } = this.props;
         console.log(this.state.status);
         
@@ -49,6 +51,16 @@ export class PokemonInfo extends React.Component{
 
         if(status === 'pending'){
         return <PokemonPendingView pokemonName = { pokemonName }/>
+        }
+
+        if(status === 'rejected'){
+            console.log('No!');
+            
+        return <PokemonErrorView message = { error.message }/>
+        }
+        
+        if(status === 'resolved'){
+        return <PokemonDataView pokemon = { pokemon }/>
         }
     }
 }
